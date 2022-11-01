@@ -1,4 +1,4 @@
-import Video from '../components/Video'
+import Product from '../components/Product'
 import { useState, useEffect } from 'react'
 import { data } from '../utils/data'
 import { customFetch } from '../utils/customFetch'
@@ -13,8 +13,13 @@ const Videos = () => {
 
   // componentDidMount
   useEffect(() => {
-    customFetch(2000, data)
-      .then(response => setDatos(response))
+    // customFetch(2000, data)
+    //   .then(response => setDatos(response))
+    //   .catch(err => console.log(err))
+
+    fetch("https://api.mercadolibre.com/sites/MLA/search?q=telefonos")
+      .then(response => response.json())
+      .then(response => setDatos(response.results))
       .catch(err => console.log(err))
   }, [])
 
@@ -22,13 +27,12 @@ const Videos = () => {
     <>
     {
       datos.map(item => (
-        <Video
+        <Product
         key={item.id}
         title={item.title}
-        dateAdded={item.dateAdded}
-        channel={item.channel}
+        price={item.price}
+        stock={item.available_quantity}
         thumbnail={item.thumbnail}
-        description={item.description}
         deleteVideo={() => deleteVideo(item.id)} />
       ))
     }
